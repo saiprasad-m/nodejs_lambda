@@ -1,7 +1,7 @@
 const fetchUsers = async() =>
-    await (await fetch('http://localhost:9000/getusers')).json();
+    await (await fetch('/.netlify/functions/getusers')).json();
 
-    // .netlify/functions/getusers - PROD
+    // /.netlify/functions/getusers - PROD
     // http://localhost:9000/getusers
 
 
