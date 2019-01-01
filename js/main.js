@@ -11,8 +11,9 @@ fetchUsers().then(data => {
     const MAX_LIST = 5;
 
     data.forEach(user => {
-
-     
+            const header = document.querySelector('h1.text-center.display-4')
+            header.innerHTML = header.textContent + "("+ data.length +")"
+        
             const li = document.createElement('li');
             li.className = 'list-group-item';
 
