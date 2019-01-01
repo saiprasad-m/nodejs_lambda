@@ -12,7 +12,7 @@ fetchUsers().then(data => {
 
     data.forEach(user => {
             const header = document.querySelector('h1.text-center.display-4')
-            header.innerHTML = header.textContent + "("+ data.length +")"
+            header.innerHTML = header.textContent.split(/\(/)[0] + "("+ data.length +")"
         
             const li = document.createElement('li');
             li.className = 'list-group-item';
