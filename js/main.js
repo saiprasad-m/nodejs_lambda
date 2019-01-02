@@ -15,10 +15,12 @@ fetchUsers().then(data => {
             header.innerHTML = header.textContent.split(/\(/)[0] + "("+ data.length +")"
         
             const li = document.createElement('li');
-            li.className = 'list-group-item card card-body';
+            //li.className = 'list-group-item';
+            const div = document.createElement('div');
+            div.className = "card card-body";
 
             const image = document.createElement('img');
-            image.src = user.avatar_url + "&s=120";
+            image.src = user.avatar_url + "&s=90";
             image.style.borderRadius='50%';
             image.style.width='40px';
             image.style.height='40px';
@@ -28,8 +30,10 @@ fetchUsers().then(data => {
             link.href = user.html_url;
             link.className = "ml-3"
             link.target = '_blank';
-            li.appendChild(image);
-            li.appendChild(link);
+            
+            div.appendChild(image);
+            div.appendChild(link);
+            li.appendChild(div);
             userList.appendChild(li);
                   
     });
