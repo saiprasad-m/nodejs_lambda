@@ -15,9 +15,9 @@ fetchUsers().then(data => {
             header.innerHTML = header.textContent.split(/\(/)[0] + "("+ data.length +")"
         
             const li = document.createElement('li');
-            //li.className = 'list-group-item';
+            li.className = 'list-group-item';
             const div = document.createElement('div');
-            div.className = "card card-body";
+            div.className = "card card-body mt-2";
 
             const image = document.createElement('img');
             image.src = user.avatar_url + "&s=90";
