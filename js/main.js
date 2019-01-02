@@ -15,7 +15,7 @@ fetchUsers().then(data => {
             header.innerHTML = header.textContent.split(/\(/)[0] + "("+ data.length +")"
         
             const li = document.createElement('li');
-            li.className = 'list-group-item list-unstyled';
+            li.className = 'list-unstyled';
             const div = document.createElement('div');
             div.className = "card card-body mt-1 d-inline-block";
 
