@@ -5,7 +5,8 @@ exports.handler = (event, context, callback) => {
 
     const {API_URL, API_CLIENT_ID, API_CLIENT_SECRET} = process.env
 
-    const URL = `${API_URL}?client_id=${API_CLIENT_ID}&client_secret=${API_CLIENT_SECRET}`
+    let URL = `${API_URL}?client_id=${API_CLIENT_ID}&client_secret=${API_CLIENT_SECRET}`
+    URL = API_URL
 
     // REsponse handler
     const send = body => {
