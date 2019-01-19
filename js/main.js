@@ -1,7 +1,3 @@
-const db = require('./config/database');
-db.authenticate()
-    .then( () => console.log('DB connected'))
-    .catch(err => console.log('Error', err))
 
 const fetchUsers = async() =>
     await (await fetch('/.netlify/functions/getusers')).json();
