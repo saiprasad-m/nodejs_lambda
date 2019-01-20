@@ -48,5 +48,5 @@ fetchUsers().then(data => {
 })
 
 getBlogs().then(data => {
-    console.log(data)
+    console.log(data);
 })
