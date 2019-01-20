@@ -4,7 +4,7 @@ const fetchUsers = async() =>
     // await(await fetch('http://localhost:9000/getusers')).json(); 
 
 const getBlogs = async() =>
-    await(await fetch('./netlify/functions/getblogs')).json();
+    await(await fetch('/.netlify/functions/getblogs')).json();
     //await(await fetch('http://localhost:9000/getblogs')).json();
     
 
