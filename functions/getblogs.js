@@ -1,7 +1,7 @@
-//const db = require('../config/database');
-//const Gig = require('../models/Gig');
-//const Sequelize = require('sequelize');
-//const Op = Sequelize.Op;
+const db = require('../config/database');
+const Gig = require('../models/Gig');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 
 
@@ -45,7 +45,7 @@ exports.handler = (event, context, callback) => {
 
     const getBlogs = async () => {
 
-        /*
+        
         db.authenticate()
         .then( () => {
             console.log('DB connected')
@@ -58,8 +58,10 @@ exports.handler = (event, context, callback) => {
             .catch(err => send(err));
         })
         .catch(err => console.log('Error', err))
-        */
-       try {
+        
+
+
+       /*try {
         const query = 'SELECT * FROM gigs';
         let result = await pool.query(query);
         console.log(result.rows);
@@ -68,7 +70,7 @@ exports.handler = (event, context, callback) => {
       } catch (err) {
         console.log(err.stack);
         send(err.stack);
-      }
+      }*/
 
     }
 
