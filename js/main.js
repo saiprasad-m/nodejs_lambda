@@ -1,11 +1,11 @@
 
 const fetchUsers = async() =>
-    await (await fetch('/.netlify/functions/getusers')).json();
-    //await(await fetch('http://localhost:9000/getusers')).json(); 
+    //await (await fetch('/.netlify/functions/getusers')).json();
+        await(await fetch('http://localhost:9000/getusers')).json(); 
 
-const getBlogs = async() =>
-    await(await fetch('/.netlify/functions/getblogs')).json();
-    //await(await fetch('http://localhost:9000/getblogs')).json();
+//const getBlogs = async() =>
+    //await(await fetch('/.netlify/functions/getblogs')).json();
+  //  await(await fetch('http://localhost:9000/getblogs')).json();
     
 
 // /.netlify/functions/getusers - PROD
@@ -47,6 +47,6 @@ fetchUsers().then(data => {
 
 })
 
-getBlogs().then(data => {
-    console.log(data);
-})
+//getBlogs().then(data => {
+//    console.log(data);
+//})

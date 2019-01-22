@@ -2,6 +2,7 @@ const db = require('../config/database');
 const Gig = require('../models/Gig');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const redis = require('redis');
 
 
 
@@ -29,10 +30,14 @@ exports.handler = (event, context, callback) => {
         }
       });
 
+      let  client = redis.createClient(18069, 'redis-18069.c1.asia-northeast1-1.gce.cloud.redislabs.com');
+      client.auth('Vkz356AfKLepPe9QHggyhAByn2MSSdHj');
+      client.on('error', (err) => {
+          console.log('Something went wrong with redis', err)
+      });
+
     // REsponse handler
     const send = body => {
-
-        console.log(body);
         callback(null, {
             statusCode: 200,
             headers: {
@@ -45,23 +50,34 @@ exports.handler = (event, context, callback) => {
 
     const getBlogs = async () => {
 
+
+        client.get('getGigs', (error, result) => {
+            console.log('error',error);
+            console.log('result', result !== null ? result.length: 0);
+            if(error || result === null) {
+                console.log('cache miss');
+
+                db.authenticate()
+                .then( () => {
+                    console.log('DB connected')
         
-        db.authenticate()
-        .then( () => {
-            console.log('DB connected')
+                    Gig.findAll()
+                    .then(gigs => { 
+                        client.setex('getGigs', 90, JSON.stringify(gigs), redis.print);
+                        send({gigs});
+                    })
+                    .catch(err => send(err));
+                })
+                .catch(err => console.log('Error', err))
 
-            Gig.findAll()
-            .then(gigs => { 
-                console.log({gigs});
-                send({gigs});
-            })
-            .catch(err => send(err));
-        })
-        .catch(err => console.log('Error', err))
-        
+            }
+            else {
+                console.log('cache hit');
+                send(JSON.parse(result));
+            }
+        });        
 
-
-       /*try {
+       /* try {
         const query = 'SELECT * FROM gigs';
         let result = await pool.query(query);
         console.log(result.rows);
@@ -70,7 +86,7 @@ exports.handler = (event, context, callback) => {
       } catch (err) {
         console.log(err.stack);
         send(err.stack);
-      }*/
+      } */
 
     }
 
