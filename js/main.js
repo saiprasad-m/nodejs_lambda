@@ -5,7 +5,10 @@ const fetchUsers = async() =>
 
 const getBlogs = async() =>
     await(await fetch('/.netlify/functions/getblogs')).json();
-  //  await(await fetch('http://localhost:9000/getblogs')).json();
+
+    const getCache = async() =>
+    await(await fetch('/.netlify/functions/getcache')).json();    
+  //  await(await fetch('http://localhost:9000/getcache')).json();
     
 
 // /.netlify/functions/getusers - PROD
@@ -47,6 +50,6 @@ fetchUsers().then(data => {
 
 })
 
-getBlogs().then(data => {
+getCache().then(data => {
     console.log(data);
 });
