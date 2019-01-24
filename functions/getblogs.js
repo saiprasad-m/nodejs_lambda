@@ -1,22 +1,6 @@
 import db  from '../config/database';
 import Gig from '../models/Gig';
-import Sequelize from 'sequelize';
 import redis from 'async-redis';
-
-
-
-import { Pool } from 'pg';
-
-
-const pool = new Pool({
-  user: 'apxlwbdjvbvdag',
-  password: '8c17069b34b7f46493be895d296b325a62aa8200bffa0f8efa32227731073e52',
-  host: 'ec2-107-20-211-10.compute-1.amazonaws.com',
-  database: 'd2a0i6uuev19di',
-  port: 5432,
-  ssl: true
-});
-
 
 
 exports.handler = async (event, context) => {
@@ -74,31 +58,6 @@ exports.handler = async (event, context) => {
     
      
     }
-
-
-       /* 
-        pool.connect((err) => {
-            if (err) {
-            console.log('Fail to connect to DB', err);
-            } else {
-            console.log('Successfully connected to DB');
-            }
-        });       
-       
-       try {
-            const query = 'SELECT * FROM gigs';
-            let result = await pool.query(query);
-            console.log(result.rows);
-            let data = result.rows;
-            send({data});
-        } 
-        catch (err) {
-            console.log(err.stack);
-            send(err.stack);
-        } 
-      */
-
-    
 
    
 

@@ -52,14 +52,14 @@ fetchUsers().then(data => {
 })
 
 getCache().then(data => {
-    console.log(data);
+    console.log('getCache', data);
 })
 .catch(err => {
     console.log('getCache', err);
 });
 
 getBlogs().then(data => {
-    console.log(data);
+    console.log('getBlogs',data);
 }).catch(err => {
     console.log('getBlogs', err);
 });
