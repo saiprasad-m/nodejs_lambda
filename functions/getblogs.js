@@ -1,12 +1,11 @@
-const db = require('../config/database');
-const Gig = require('../models/Gig');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-const redis = require('redis');
+import db  from '../config/database';
+import Gig from '../models/Gig';
+import Sequelize from 'sequelize';
+import redis from 'async-redis';
 
 
 
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
 
 const pool = new Pool({
@@ -20,15 +19,7 @@ const pool = new Pool({
 
 
 
-exports.handler = (event, context, callback) => {
-
-    pool.connect((err) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('Successfully connected to DB');
-        }
-      });
+exports.handler = async (event, context) => {
 
       let  client = redis.createClient(18069, 'redis-18069.c1.asia-northeast1-1.gce.cloud.redislabs.com');
       client.auth('Vkz356AfKLepPe9QHggyhAByn2MSSdHj');
@@ -36,60 +27,79 @@ exports.handler = (event, context, callback) => {
           console.log('Something went wrong with redis', err)
       });
 
-    // REsponse handler
-    const send = body => {
-        callback(null, {
-            statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-            },
-            body: JSON.stringify(body)
-        })
-    }
-
-    const getBlogs = async () => {
+      client.debug =true;
 
 
-        client.get('getGigs', (error, result) => {
-            console.log('error',error);
-            console.log('result', result !== null ? result.length: 0);
-            if(error || result === null) {
+    const headerPart = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+        };
+
+
+
+    //const getBlogs = async () => {
+
+    if (event.httpMethod == 'GET' ) {
+        let hitmiss = false;
+        const avail = await client.get('getGigs'); //, (error, result) => {
+            //console.log('result', avail, avail !== null ? avail.length: 0);
+            if(avail === null) {
                 console.log('cache miss');
-
                 db.authenticate()
                 .then( () => {
                     console.log('DB connected')
-        
-                    Gig.findAll()
-                    .then(gigs => { 
-                        client.setex('getGigs', 90, JSON.stringify(gigs), redis.print);
-                        send({gigs});
-                    })
-                    .catch(err => send(err));
                 })
-                .catch(err => console.log('Error', err))
-
+                hitmiss= true;       
             }
             else {
                 console.log('cache hit');
-                send(JSON.parse(result));
+                hitmiss = false;
+                return { statusCode: 200, headers: headerPart, body: avail}
             }
-        });        
-
-       /* try {
-        const query = 'SELECT * FROM gigs';
-        let result = await pool.query(query);
-        console.log(result.rows);
-        let data = result.rows;
-        send({data});
-      } catch (err) {
-        console.log(err.stack);
-        send(err.stack);
-      } */
-
+        //}); 
+            
+        console.log('avail',avail, hitmiss);
+        let gigs = await Gig.findAll()
+            .then(gigs => {
+                client.setex('getGigs', 90, JSON.stringify(gigs));
+                return { statusCode: 200, headers: headerPart, body: JSON.stringify(gigs)} 
+            })
+            .catch(err =>  (
+                { statusCode: 200, headers: headerPart, body: JSON.stringify(err)}
+            ))
+    
+        //console.log('gigs',gigs);
+        //client.setex('getGigs', 90, JSON.stringify(gigs));
+        return gigs;    
+    
+     
     }
 
-    if (event.httpMethod == 'GET') getBlogs();
+
+       /* 
+        pool.connect((err) => {
+            if (err) {
+            console.log('Fail to connect to DB', err);
+            } else {
+            console.log('Successfully connected to DB');
+            }
+        });       
+       
+       try {
+            const query = 'SELECT * FROM gigs';
+            let result = await pool.query(query);
+            console.log(result.rows);
+            let data = result.rows;
+            send({data});
+        } 
+        catch (err) {
+            console.log(err.stack);
+            send(err.stack);
+        } 
+      */
+
+    
+
+   
 
 }

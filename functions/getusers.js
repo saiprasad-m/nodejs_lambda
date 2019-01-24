@@ -1,6 +1,6 @@
-const axios = require('axios')
+import axios from 'axios';
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context) => {
 
     const {
         API_URL,
@@ -11,29 +11,22 @@ exports.handler = (event, context, callback) => {
     let URL = `${API_URL}?client_id=${API_CLIENT_ID}&client_secret=${API_CLIENT_SECRET}`
     URL = API_URL
 
-    // REsponse handler
-    const send = body => {
-        callback(null, {
-            statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-            },
-            body: JSON.stringify(body)
-        });
-
-        
+    const header = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     }
 
-    const getUsers = () => {
+    if (event.httpMethod == 'GET') {
+    return axios.get(URL )
+            .then(res => (
+                 {statusCode: 200, headers: header, body: JSON.stringify(res.data)}
+            ))
+            .catch(err => (
+                {statusCode: 200, headers: header, body: JSON.stringify({'error': err})}
+            ))    
 
-        axios.get(URL)
-            .then(res => { 
-                send(res.data);
-            })
-            .catch(err => send(err))
     }
 
-    if (event.httpMethod == 'GET') getUsers();
+
 
 }
