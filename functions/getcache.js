@@ -22,9 +22,12 @@ exports.handler = async (event, context) => {
         if (event.httpMethod == 'GET') {
             console.log('event.queryStringParameters', event.queryStringParameters, event.path);
             let keylist = Object.keys(event.queryStringParameters)[0];
-            console.log('keylist',keylist.length)
+            console.log('keylist', (keylist === undefined) ? 0 : keylist.length)
+            if (keylist === undefined) {
+                return {statusCode: 200, headers: headerset, body: JSON.stringify( {"cacheResponse" : "failed"})}                
+            }
             const cacheResponse = await client.get(keylist); // , (error, result ) =>  {
-                if(cacheResponse) {
+                if(cacheResponse && keylist !== undefined) {
                     return {statusCode: 200, headers: headerset, body: cacheResponse}
                 }
                 else {

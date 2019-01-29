@@ -45,7 +45,7 @@ exports.handler = async (event, context) => {
         console.log('avail',avail, hitmiss);
         let gigs = await Gig.findAll()
             .then(gigs => {
-                client.setex('getGigs', 90, JSON.stringify(gigs));
+                client.setex('getGigs', 900, JSON.stringify(gigs));
                 return { statusCode: 200, headers: headerPart, body: JSON.stringify(gigs)} 
             })
             .catch(err =>  (
