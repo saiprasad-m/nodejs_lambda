@@ -1,6 +1,6 @@
 {
   "name": "nodejs_lambda",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async-redis": "^1.1.5",
+    "async-redis": "^2.0.0",
     "aws-sdk": "^2.391.0",
     "axios": "^0.21.1",
     "hiredis": "^0.5.0",
