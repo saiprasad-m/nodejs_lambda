@@ -5,8 +5,8 @@ import querystring from "querystring";
 
 exports.handler = async (event, context) => {
 
-    let  client = redis.createClient(18069, 'redis-18069.c1.asia-northeast1-1.gce.cloud.redislabs.com');
-    client.auth('Vkz356AfKLepPe9QHggyhAByn2MSSdHj');
+    let  client = redis.createClient(10659, 'redis-10659.c1.asia-northeast1-1.gce.cloud.redislabs.com');
+    client.auth('lHO1jeUPJL7lK0OQV9YGtR3TctUInYM9');
     client.on('error', (err) => {
         console.log('Something went wrong with redis', err)
     });
