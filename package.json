@@ -21,7 +21,7 @@
     "pg-hstore": "^2.3.2",
     "pg-native": "^3.0.0",
     "request": "^2.88.0",
-    "sequelize": "^5.15.1",
+    "sequelize": "^5.22.5",
     "sqlite3": "^5.1.7",
     "tedious": "^4.1.3"
   }
